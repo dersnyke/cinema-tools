@@ -7,7 +7,7 @@ Die Scripte sind vorgeneriert mit ChatGPT und ggf. durch mich hie und da angepas
 dcpls.sh
 --------
 
-Shellscript um eine tabellarische Übersicht über die UUID-Unterverzeichnisse zu erhalten, inkl. Größenangabe der Ordner.
+Shellscript um eine tabellarische Übersicht über die UUID-Unterverzeichnisse zu erhalten, inkl. Größenangabe der Ordner und der darin lt. ASSETMAP enthaltenen Daten.
 
 
 --------
