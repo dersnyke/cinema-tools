@@ -18,6 +18,7 @@ find_duplicate_files() {
 
             # Überspringe Dateien "VOLINDEX" und "ASSETMAP"
             if [[ "$dateiname" == VOLINDEX* || "$dateiname" == ASSETMAP* ]]; then
+                echo "Überspringe VOLINDEX/ASSETMAP."
                 continue
             fi
 
