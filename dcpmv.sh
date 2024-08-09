@@ -11,8 +11,8 @@ search_and_rename() {
             titel=$(grep -o -m 1 -E '<AnnotationText>[^<]*</AnnotationText>' "$film_verzeichnis"/ASSETMAP* | sed 's/<AnnotationText>//;s/<\/AnnotationText>//')
 
             # Bestätigungsabfrage
-            echo "Das Verzeichnis '$film_verzeichnis' umbenennen in '$titel'? (j/n)"
-            read bestaetigung
+            echo -n "Das Verzeichnis '$film_verzeichnis' umbenennen in '$titel'? (j/n)"
+            read -r bestaetigung
             if [ "$bestaetigung" = "j" ]; then
                 # Verzeichnis umbenennen
                 mv "$film_verzeichnis" "$(dirname "$film_verzeichnis")/$titel"
