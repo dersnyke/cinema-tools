@@ -16,7 +16,6 @@ find_duplicate_files() {
             dateiname=$(basename "$datei2")
             datei1="$ov_ordner/$dateiname"
 
-            # Überspringe Dateien "VOLINDEX" und "ASSETMAP"
             if [[ "$dateiname" == VOLINDEX* || "$dateiname" == ASSETMAP* ]]; then
                 echo "Überspringe VOLINDEX/ASSETMAP."
                 continue
@@ -24,20 +23,14 @@ find_duplicate_files() {
 
             if [ -f "$datei1" ]; then
                 echo "Gefundenes Duplikat: $dateiname"
-                echo " - Berechne Prüfsumme für $dateiname ..."
-                checksum1=$(md5sum "$datei1" | cut -d ' ' -f 1)
-                checksum2=$(md5sum "$datei2" | cut -d ' ' -f 1)
-
-                if [ "$checksum1" = "$checksum2" ]; then
-                    echo " - Die Datei '$dateiname' ist identisch mit jener im Ordner '$ov_ordner'."
-                    echo -n "Löschen? (j/n): "
+                echo " - Vergleiche Exemplare..."
+                if cmp -s "$datei1" "$datei2"; then
+                    echo " -> Identisch."
+                    printf "Löschen? (j/n): "
                     read -r bestaetigung
-                    if [ "$bestaetigung" = "j" ]; then
-                        rm "$datei2"
-                        echo " - Die Datei '$dateiname' wurde gelöscht."
-                    fi
+                    [ "$bestaetigung" = "j" ] && rm "$datei2" && echo " - Gelöscht."
                 else
-                    echo " - Die Datei '$dateiname' unterscheidet sich inhaltlich von der Datei im Ordner '$ov_ordner'."
+                    echo " -> Die Datei '$dateiname' unterscheidet sich inhaltlich von der Datei im Ordner '$ov_ordner'."
                 fi
             fi
         fi
