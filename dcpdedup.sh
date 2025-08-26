@@ -25,10 +25,8 @@ find_duplicate_files() {
                 echo "Gefundenes Duplikat: $dateiname"
                 echo " - Vergleiche Exemplare..."
                 if cmp -s "$datei1" "$datei2"; then
-                    echo " -> Identisch."
-                    printf "Löschen? (j/n): "
-                    read -r bestaetigung
-                    [ "$bestaetigung" = "j" ] && rm "$datei2" && echo " - Gelöscht."
+                    echo " -> Identisch. Duplikat entfernen."
+                    rm "$datei2"
                 else
                     echo " -> Die Datei '$dateiname' unterscheidet sich inhaltlich von der Datei im Ordner '$ov_ordner'."
                 fi
