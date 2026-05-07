@@ -9,6 +9,13 @@ fi
 ov_ordner="$1"
 vf_ordner="$2"
 
+# Dateigröße effizient aus den Dateisystem-Metadaten lesen.
+# Linux/GNU stat:    stat -c %s
+# BSD/FreeBSD stat: stat -f %z
+get_size() {
+    stat -c %s "$1" 2>/dev/null || stat -f %z "$1" 2>/dev/null
+}
+
 for datei2 in "$vf_ordner"/*; do
     [ -f "$datei2" ] || continue
 
@@ -26,8 +33,13 @@ for datei2 in "$vf_ordner"/*; do
 
     echo "Gefundenes Duplikat: $dateiname"
 
-    groesse1=$(wc -c < "$datei1" | tr -d ' ')
-    groesse2=$(wc -c < "$datei2" | tr -d ' ')
+    groesse1=$(get_size "$datei1")
+    groesse2=$(get_size "$datei2")
+
+    if [ -z "$groesse1" ] || [ -z "$groesse2" ]; then
+        echo " -> Konnte Dateigröße nicht ermitteln. Überspringe Datei."
+        continue
+    fi
 
     if [ "$groesse1" = "$groesse2" ]; then
         echo " -> Gleicher Dateiname und gleiche Größe ($groesse1 Bytes)."
